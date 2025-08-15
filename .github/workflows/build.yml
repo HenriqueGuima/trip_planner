@@ -19,11 +19,15 @@ jobs:
       # Inject Google Maps API key into all HTML files
       - name: Inject Google Maps API Key
         run: |
+          # Replace placeholder in all HTML files
           find . -name "*.html" -exec sed -i "s|__GOOGLE_MAPS_KEY__|${{ secrets.GOOGLE_MAPS_KEY }}|g" {} +
+
           echo "After replacement, index.html contains:"
           grep -n "GOOGLE_MAPS_KEY" index.html || true
-          if grep -r "__GOOGLE_MAPS_KEY__" .; then
-            echo "❌ Placeholder not replaced"
+
+          # Check for leftover placeholders in HTML only, skip .github folder
+          if grep -R "__GOOGLE_MAPS_KEY__" --include="*.html" --exclude-dir=".github" .; then
+            echo "❌ Placeholder not replaced in one or more HTML files."
             exit 1
           fi
 
