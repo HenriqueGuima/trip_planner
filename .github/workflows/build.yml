@@ -14,30 +14,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
+      # Inject Google Maps API key into all HTML files
       - name: Inject Google Maps API Key
         run: |
-          # Replace in all HTML files under frontend/
-          find frontend -name "*.html" -exec sed -i "s|__GOOGLE_MAPS_KEY__|${{ secrets.GOOGLE_MAPS_KEY }}|g" {} +
-
-          # Confirm replacement
-          echo "After replacement, found in these lines:"
-          grep -n "GOOGLE_MAPS_KEY" frontend/*.html
-
-          # Fail if still placeholder
-          if grep -r "__GOOGLE_MAPS_KEY__" frontend; then
-            echo "❌ API key placeholder was not replaced. Check sed path or placeholder text."
+          find . -name "*.html" -exec sed -i "s|__GOOGLE_MAPS_KEY__|${{ secrets.GOOGLE_MAPS_KEY }}|g" {} +
+          echo "After replacement, index.html contains:"
+          grep -n "GOOGLE_MAPS_KEY" index.html || true
+          if grep -r "__GOOGLE_MAPS_KEY__" .; then
+            echo "❌ Placeholder not replaced"
             exit 1
           fi
 
       - name: Setup Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v4
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: frontend
+          path: .
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
