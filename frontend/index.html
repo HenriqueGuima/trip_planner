@@ -230,7 +230,6 @@
 <script>
     (function loadGoogleMaps() {
         if (window.google && window.google.maps) return; 
-        console.log('KEY -->', window.APP_CONFIG);
         const key = (window.APP_CONFIG && window.APP_CONFIG.GOOGLE_MAPS_KEY) || '';
         const url = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=initMap`;
         const s = document.createElement('script');
