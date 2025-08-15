@@ -18,7 +18,18 @@ jobs:
 
       - name: Inject Google Maps API Key
         run: |
-          sed -i "s|__GOOGLE_MAPS_KEY__|${{ secrets.GOOGLE_MAPS_KEY }}|g" frontend/index.html
+          # Replace in all HTML files under frontend/
+          find frontend -name "*.html" -exec sed -i "s|__GOOGLE_MAPS_KEY__|${{ secrets.GOOGLE_MAPS_KEY }}|g" {} +
+
+          # Confirm replacement
+          echo "After replacement, found in these lines:"
+          grep -n "GOOGLE_MAPS_KEY" frontend/*.html
+
+          # Fail if still placeholder
+          if grep -r "__GOOGLE_MAPS_KEY__" frontend; then
+            echo "❌ API key placeholder was not replaced. Check sed path or placeholder text."
+            exit 1
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v3

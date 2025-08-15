@@ -232,8 +232,8 @@
 <!-- Load Google Maps lazily and asynchronously (best-practice wrapper) -->
 <script>
     (function loadGoogleMaps() {
-        if (window.google && window.google.maps) return; 
-        const key = (window.APP_CONFIG && window.APP_CONFIG.GOOGLE_MAPS_KEY) || __GOOGLE_MAPS_KEY__ || '';
+    if (window.google && window.google.maps) return; 
+        const key = (window.APP_CONFIG && window.APP_CONFIG.GOOGLE_MAPS_KEY) || GOOGLE_MAPS_KEY || '';
         const url = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=initMap`;
         const s = document.createElement('script');
         s.src = url;
