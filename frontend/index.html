@@ -224,10 +224,22 @@
 <script src="./app.js"></script>
 <script src="./maps.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Load app config (gitignored) so API keys are not inlined into index.html -->
-<script src="./config.js"></script>
+<!-- Load app config from serverless endpoint so API keys provided by Vercel env are injected at runtime -->
 <script>
-  const GOOGLE_MAPS_KEY = "__GOOGLE_MAPS_KEY__";
+    // Load runtime config from /api/config (Vercel serverless). If that fails, fall back to local config.js
+    (function(){
+        var s = document.createElement('script');
+        s.async = true;
+        s.defer = true;
+        s.src = '/api/config';
+        s.onerror = function(){
+            // fallback for local dev where /api/config may not exist
+            var f = document.createElement('script');
+            f.src = './config.js';
+            document.head.appendChild(f);
+        };
+        document.head.appendChild(s);
+    })();
 </script>
 <!-- Load Google Maps lazily and asynchronously (best-practice wrapper) -->
 <script>
