@@ -226,11 +226,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Load app config (gitignored) so API keys are not inlined into index.html -->
 <script src="./config.js"></script>
+<script>
+  const GOOGLE_MAPS_KEY = "__GOOGLE_MAPS_KEY__";
+</script>
 <!-- Load Google Maps lazily and asynchronously (best-practice wrapper) -->
 <script>
     (function loadGoogleMaps() {
         if (window.google && window.google.maps) return; 
-        const key = (window.APP_CONFIG && window.APP_CONFIG.GOOGLE_MAPS_KEY) || '';
+        const key = (window.APP_CONFIG && window.APP_CONFIG.GOOGLE_MAPS_KEY) || GOOGLE_MAPS_KEY || '';
         const url = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=initMap`;
         const s = document.createElement('script');
         s.src = url;
